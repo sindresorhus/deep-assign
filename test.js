@@ -106,3 +106,12 @@ if (typeof Symbol !== 'undefined') {
 		t.end();
 	});
 }
+
+test('do not transform functions', t => {
+	var target = {
+		foo: function bar() {}
+	};
+	var source = {};
+	t.is(typeof fn({}, target, source).foo, 'function');
+	t.end();
+});

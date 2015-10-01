@@ -11,6 +11,10 @@ function toObject(val) {
 	return Object(val);
 }
 
+function isFunc(val) {
+	return typeof val === 'function';
+}
+
 function base(to, from) {
 	if (to === from) {
 		return to;
@@ -24,7 +28,7 @@ function base(to, from) {
 
 			if (Array.isArray(val)) {
 				to[key] = val.slice();
-			} else if (isObj(val)) {
+			} else if (isObj(val) && !isFunc(val)) {
 				to[key] = base(to[key] || {}, val);
 			} else if (val !== undefined) {
 				to[key] = val;

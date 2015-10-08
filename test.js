@@ -13,8 +13,16 @@ test('do not assign null values', t => {
 	t.end();
 });
 
-test('assign values to null targets', t => {
-	t.same(fn({foo: null}, {foo: {}}), {foo: {}});
+test('throw TypeError on null targets', t => {
+	t.throws(() => fn({foo: null}, {foo: {}}), TypeError);
+	t.end();
+});
+
+test('assign proprety, if proprety is null in the prototype chain', t => {
+	var Unicorn = () => {};
+	Unicorn.prototype.rainbows = null;
+	var unicorn = new Unicorn();
+	t.is(fn(unicorn, {rainbows: 'many'}).rainbows, 'many');
 	t.end();
 });
 
@@ -23,8 +31,27 @@ test('do not assign undefined values', t => {
 	t.end();
 });
 
-test('assign values to undefined targets', t => {
-	t.same(fn({foo: undefined}, {foo: {}}), {foo: {}});
+test('throw TypeError on undefined targets', t => {
+	t.throws(() => fn({foo: undefined}, {foo: {}}), TypeError);
+	t.end();
+});
+
+test('assign proprety, if proprety is undefined in the prototype chain', t => {
+	var Unicorn = () => {};
+	Unicorn.prototype.rainbows = undefined;
+	var unicorn = new Unicorn();
+	t.is(fn(unicorn, {rainbows: 'many'}).rainbows, 'many');
+	t.end();
+});
+
+test('do not merge with a target proprety in the prototype chain', t => {
+	var amountOfRainbows = {amount: 'many'};
+	var Unicorn = () => {};
+	Unicorn.prototype.rainbows = amountOfRainbows;
+	var unicorn = fn(new Unicorn(), {rainbows: 'none'});
+	t.is(unicorn.rainbows, 'none');
+	t.is(unicorn.rainbows.amount, undefined);
+	t.is(Unicorn.prototype.rainbows, amountOfRainbows);
 	t.end();
 });
 

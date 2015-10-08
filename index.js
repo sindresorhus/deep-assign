@@ -18,7 +18,13 @@ function assignKey(to, from, key) {
 		return;
 	}
 
-	if (to[key] === undefined || !isObj(val)) {
+	if (Object.hasOwnProperty.call(to, key)) {
+		if (to[key] === undefined || to[key] === null) {
+			throw new TypeError('Cannot convert undefined or null to object (' + key + ')');
+		}
+	}
+
+	if (!Object.hasOwnProperty.call(to, key) || !isObj(val)) {
 		to[key] = val;
 	} else {
 		to[key] = assign(Object(to[key]), from[key]);

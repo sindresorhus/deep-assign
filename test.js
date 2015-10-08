@@ -134,6 +134,13 @@ test('support `Object.create(null)` objects', t => {
 	t.end();
 });
 
+test('support `Object.create(null)` targets', t => {
+	var obj = Object.create(null);
+	obj.foo = true;
+	t.same(fn(obj, {bar: false}), {foo: true, bar: false});
+	t.end();
+});
+
 test('preserve property order', t => {
 	var letters = 'abcdefghijklmnopqrst';
 	var source = {};

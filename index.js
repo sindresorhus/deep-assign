@@ -14,11 +14,11 @@ function toObject(val) {
 function assignKey(to, from, key) {
 	var val = from[key];
 
-	if (typeof val === 'undefined' || val === null) {
+	if (val === undefined || val === null) {
 		return;
 	}
 
-	if (typeof to[key] === 'undefined' || !isObj(val)) {
+	if (to[key] === undefined || !isObj(val)) {
 		to[key] = val;
 	} else {
 		to[key] = assign(Object(to[key]), from[key]);

@@ -11,11 +11,27 @@ function toObject(val) {
 	return Object(val);
 }
 
-function isFunc(val) {
-	return typeof val === 'function';
+function assignKey(to, from, key) {
+	var val = from[key];
+
+	if (val === undefined || val === null) {
+		return;
+	}
+
+	if (hasOwnProperty.call(to, key)) {
+		if (to[key] === undefined || to[key] === null) {
+			throw new TypeError('Cannot convert undefined or null to object (' + key + ')');
+		}
+	}
+
+	if (!hasOwnProperty.call(to, key) || !isObj(val)) {
+		to[key] = val;
+	} else {
+		to[key] = assign(Object(to[key]), from[key]);
+	}
 }
 
-function base(to, from) {
+function assign(to, from) {
 	if (to === from) {
 		return to;
 	}
@@ -24,15 +40,7 @@ function base(to, from) {
 
 	for (var key in from) {
 		if (hasOwnProperty.call(from, key)) {
-			var val = from[key];
-
-			if (Array.isArray(val)) {
-				to[key] = val.slice();
-			} else if (isObj(val) && !isFunc(val)) {
-				to[key] = base(to[key] || {}, val);
-			} else if (val !== undefined) {
-				to[key] = val;
-			}
+			assignKey(to, from, key);
 		}
 	}
 
@@ -41,7 +49,7 @@ function base(to, from) {
 
 		for (var i = 0; i < symbols.length; i++) {
 			if (propIsEnumerable.call(from, symbols[i])) {
-				to[symbols[i]] = from[symbols[i]];
+				assignKey(to, from, symbols[i]);
 			}
 		}
 	}
@@ -53,7 +61,7 @@ module.exports = function deepAssign(target) {
 	target = toObject(target);
 
 	for (var s = 1; s < arguments.length; s++) {
-		base(target, arguments[s]);
+		assign(target, arguments[s]);
 	}
 
 	return target;

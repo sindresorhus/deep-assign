@@ -226,3 +226,25 @@ test('do not transform functions', t => {
 	t.is(typeof fn({}, target, source).foo, 'function');
 	t.end();
 });
+
+test('bug - reuses object in deep assignment', t => {
+	const fixture = {
+		foo: {
+			bar: false
+		}
+	};
+
+	const run = x => {
+		const opts = fn({}, fixture);
+
+		if (x === true) {
+			opts.foo.bar = true;
+		}
+
+		return opts.foo.bar;
+	};
+
+	t.true(run(true));
+	t.false(run());
+	t.end();
+});

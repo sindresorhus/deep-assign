@@ -79,6 +79,34 @@ test('support strings as targets', t => {
 	t.end();
 });
 
+test('support Date as targets', t => {
+	var target = fn({date: new Date()}, {date: 1446275964787});
+	t.is(target.date, 1446275964787);
+	t.is(target.date.constructor, Number);
+	t.end();
+});
+
+test('support Date as targets', t => {
+	var target = fn({date: new Date()}, {date: new Date(1446275964787)});
+	t.is(target.date.getTime(), 1446275964787);
+	t.is(target.date.constructor, Date);
+	t.end();
+});
+
+test('support RegExp as targets', t => {
+	var target = fn({regexp: /reg/}, {regexp: 'string'});
+	t.is(target.regexp.constructor, String);
+	t.is(target.regexp, 'string');
+	t.end();
+});
+
+test('support RegExp as targets', t => {
+	var target = fn({regexp: /reg/}, {regexp: /new/});
+	t.is(target.regexp.constructor, RegExp);
+	t.is(target.regexp.test('new'), true);
+	t.end();
+});
+
 test('support arrays as targets', t => {
 	var target = {a: ['many']};
 	var source = {a: []};

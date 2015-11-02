@@ -135,9 +135,12 @@ test('support `Object.create(null)` objects', t => {
 });
 
 test('support `Object.create(null)` targets', t => {
-	var obj = Object.create(null);
-	obj.foo = true;
-	t.same(fn(obj, {bar: false}), {foo: true, bar: false});
+	var target = Object.create(null);
+	var expected = Object.create(null);
+	target.foo = true;
+	expected.foo = true;
+	expected.bar = false;
+	t.same(fn(target, {bar: false}), expected);
 	t.end();
 });
 

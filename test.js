@@ -1,6 +1,8 @@
 import test from 'ava';
 import fn from './';
 
+const nativeSymbols = Object(Symbol.for('')) !== Symbol.for('');
+
 test('assign own enumerable propreties from source to target object', t => {
 	t.same(fn({foo: 0}, {bar: 1}), {foo: 0, bar: 1});
 	t.same(fn({foo: 0}, null, undefined), {foo: 0});
@@ -168,34 +170,32 @@ test('deep', t => {
 	});
 });
 
-if (typeof Symbol !== 'undefined') {
-	test('support symbol properties', t => {
-		const target = {};
-		const source = {};
-		const sym = Symbol('foo');
-		source[sym] = 'bar';
-		fn(target, source);
-		t.is(target[sym], 'bar');
-	});
+test('support symbols as targets', t => {
+	const target = fn({sym: Symbol.for('foo')}, {sym: {rainbows: 'many'}});
+	t.true(target.sym instanceof Symbol);
+	t.is(target.sym.rainbows, 'many');
+});
 
-	test('support symbols as targets', t => {
-		const target = fn({sym: Symbol('foo')}, {sym: {rainbows: 'many'}});
-		t.is(target.sym.constructor, Symbol);
-		t.is(target.sym.rainbows, 'many');
-	});
+(nativeSymbols ? test : test.skip)('support symbol properties', t => {
+	const target = {};
+	const source = {};
+	const sym = Symbol('foo');
+	source[sym] = 'bar';
+	fn(target, source);
+	t.is(target[sym], 'bar');
+});
 
-	test('only copy enumerable symbols', t => {
-		const target = {};
-		const source = {};
-		const sym = Symbol('foo');
-		Object.defineProperty(source, sym, {
-			enumerable: false,
-			value: 'bar'
-		});
-		fn(target, source);
-		t.is(target[sym], undefined);
+(nativeSymbols ? test : test.skip)('only copy enumerable symbols', t => {
+	const target = {};
+	const source = {};
+	const sym = Symbol('foo');
+	Object.defineProperty(source, sym, {
+		enumerable: false,
+		value: 'bar'
 	});
-}
+	fn(target, source);
+	t.false(sym in target);
+});
 
 test('do not transform functions', t => {
 	const target = {foo: function bar() {}};

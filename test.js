@@ -4,13 +4,13 @@ import fn from './';
 const nativeSymbols = Object(Symbol.for('')) !== Symbol.for('');
 
 test('assign own enumerable propreties from source to target object', t => {
-	t.same(fn({foo: 0}, {bar: 1}), {foo: 0, bar: 1});
-	t.same(fn({foo: 0}, null, undefined), {foo: 0});
-	t.same(fn({foo: 0}, null, undefined, {bar: 1}, null), {foo: 0, bar: 1});
+	t.deepEqual(fn({foo: 0}, {bar: 1}), {foo: 0, bar: 1});
+	t.deepEqual(fn({foo: 0}, null, undefined), {foo: 0});
+	t.deepEqual(fn({foo: 0}, null, undefined, {bar: 1}, null), {foo: 0, bar: 1});
 });
 
 test('do not assign null values', t => {
-	t.same(fn({}, {foo: null}), {});
+	t.deepEqual(fn({}, {foo: null}), {});
 });
 
 test('throw TypeError on null targets', t => {
@@ -25,7 +25,7 @@ test('assign proprety, if proprety is null in the prototype chain', t => {
 });
 
 test('do not assign undefined values', t => {
-	t.same(fn({}, {foo: undefined}), {});
+	t.deepEqual(fn({}, {foo: undefined}), {});
 });
 
 test('throw TypeError on undefined targets', t => {
@@ -95,8 +95,8 @@ test('support functions', t => {
 });
 
 test('support multiple sources', t => {
-	t.same(fn({foo: 0}, {bar: 1}, {bar: 2}), {foo: 0, bar: 2});
-	t.same(fn({}, {}, {foo: 1}), {foo: 1});
+	t.deepEqual(fn({foo: 0}, {bar: 1}, {bar: 2}), {foo: 0, bar: 2});
+	t.deepEqual(fn({}, {}, {foo: 1}), {foo: 1});
 });
 
 test('only iterate own keys', t => {
@@ -104,7 +104,7 @@ test('only iterate own keys', t => {
 	Unicorn.prototype.rainbows = 'many';
 	const unicorn = new Unicorn();
 	unicorn.bar = 1;
-	t.same(fn({foo: 1}, unicorn), {foo: 1, bar: 1});
+	t.deepEqual(fn({foo: 1}, unicorn), {foo: 1, bar: 1});
 });
 
 test('return the modified target object', t => {
@@ -116,7 +116,7 @@ test('return the modified target object', t => {
 test('support `Object.create(null)` objects', t => {
 	const obj = Object.create(null);
 	obj.foo = true;
-	t.same(fn({}, obj), {foo: true});
+	t.deepEqual(fn({}, obj), {foo: true});
 });
 
 test('support `Object.create(null)` targets', t => {
@@ -125,7 +125,7 @@ test('support `Object.create(null)` targets', t => {
 	target.foo = true;
 	expected.foo = true;
 	expected.bar = false;
-	t.same(fn(target, {bar: false}), expected);
+	t.deepEqual(fn(target, {bar: false}), expected);
 });
 
 test('preserve property order', t => {
@@ -139,7 +139,7 @@ test('preserve property order', t => {
 });
 
 test('deep', t => {
-	t.same(fn({
+	t.deepEqual(fn({
 		foo: {
 			foo: {
 				foo: true

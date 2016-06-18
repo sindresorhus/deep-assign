@@ -5,7 +5,7 @@ var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
 function toObject(val) {
 	if (val === null || val === undefined) {
-		throw new TypeError('Sources cannot be null or undefined');
+		throw new TypeError('Cannot convert undefined or null to object');
 	}
 
 	return Object(val);

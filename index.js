@@ -1,5 +1,6 @@
 'use strict';
 var isObj = require('is-obj');
+var isPlainObj = require('is-plain-obj');
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -24,7 +25,7 @@ function assignKey(to, from, key) {
 		}
 	}
 
-	if (!hasOwnProperty.call(to, key) || !isObj(val)) {
+	if ((!hasOwnProperty.call(to, key) && !isPlainObj(val)) || !isObj(val)) {
 		to[key] = val;
 	} else {
 		to[key] = assign(Object(to[key]), from[key]);

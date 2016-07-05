@@ -1,5 +1,6 @@
 'use strict';
 var isObj = require('is-obj');
+
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 

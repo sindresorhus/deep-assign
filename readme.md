@@ -27,7 +27,7 @@ Recursively assigns own enumerable properties of `source` objects to the `target
 
 ## Related
 
-- [object-assign](https://github.com/sindresorhus/object-assign) - ES2015 Object.assign() ponyfill
+- [object-assign](https://github.com/sindresorhus/object-assign) - ES2015 Object.assign() polyfill
 
 
 ## License

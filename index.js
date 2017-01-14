@@ -12,6 +12,18 @@ function toObject(val) {
 	return Object(val);
 }
 
+function isInseparableObj(val) {
+	if (val instanceof Date) {
+		return true;
+	}
+
+	if (val instanceof RegExp) {
+		return true;
+	}
+
+	return false;
+}
+
 function assignKey(to, from, key) {
 	var val = from[key];
 
@@ -25,7 +37,7 @@ function assignKey(to, from, key) {
 		}
 	}
 
-	if (!hasOwnProperty.call(to, key) || !isObj(val)) {
+	if (!hasOwnProperty.call(to, key) || !isObj(val) || isInseparableObj(to[key])) {
 		to[key] = val;
 	} else {
 		to[key] = assign(Object(to[key]), from[key]);

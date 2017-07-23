@@ -1,3 +1,11 @@
+# DEPRECATED
+
+Version 2 of this module ended up being [something I don't want](https://github.com/sindresorhus/deep-assign/issues/6) and I don't have time to fix it.
+
+Check out [`lodash.merge`](https://lodash.com/docs/#merge) or [`merge-options`](https://github.com/schnittstabil/merge-options) instead.
+
+---
+
 # deep-assign [![Build Status](https://travis-ci.org/sindresorhus/deep-assign.svg?branch=master)](https://travis-ci.org/sindresorhus/deep-assign)
 
 > Recursive [`Object.assign()`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)

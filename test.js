@@ -89,7 +89,7 @@ test('support functions', t => {
 	oracle42.bar = true;
 	oracle666.bar = false;
 	const target = fn({}, {oracle: oracle42}, {oracle: oracle666});
-	t.is(target.oracle(), 42);
+	t.is(target.oracle(), 666);
 	t.is(target.oracle.foo, true);
 	t.is(target.oracle.bar, false);
 });
